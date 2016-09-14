@@ -2,12 +2,10 @@ var Queue = function() {
   var someInstance = {};
   var queSize = 0;
   var countAdd = 0;
+  var countLost = 0;
 
   // Use an object with numeric keys to store values
   var storage = {};
-
-  //ths is the key to the first queued item
-  storage.first = 0;
 
   // Implement the methods below
 
@@ -17,7 +15,7 @@ var Queue = function() {
     //create que item
     storage[countAdd] = {data: value, next: undefined};
     if (countAdd > 0) {
-      //attatch next of previous que item to this
+      //attatch next of previous que item 
       storage[countAdd-1].next = countAdd;
     }
     countAdd++;
@@ -26,7 +24,12 @@ var Queue = function() {
   someInstance.dequeue = function() {
     if (queSize !== 0) {
       //something
+      //retrieve my 'popped' item
+      var retVal = storage[countLost].data;
+      //reduce 'size' of que
       queSize--;
+      countLost++;
+      return retVal;
     }
   };
 
@@ -36,3 +39,4 @@ var Queue = function() {
 
   return someInstance;
 };
+
