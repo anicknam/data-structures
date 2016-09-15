@@ -4,7 +4,6 @@ var Stack = function() {
   var someInstance = {};
 
   //properties of someInstance
-  //someInstance.storage = {};
   someInstance.stackSize = 0;
 
 
@@ -23,16 +22,16 @@ var extend = function(to, from) {
 
 var stackMethods = {
 
-
-
   push: function(value){
-    this[this.stackSize] = value;
+    this[this.stackSize - 1] = value;
     this.stackSize++;
   },
 
   pop: function(){
-     
-    return this[this.stackSize];
+    if (this.stackSize > 0) {
+      this.stackSize--;
+      return this[this.stackSize - 1];
+    }
   },
 
   size: function(){
