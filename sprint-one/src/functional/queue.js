@@ -13,11 +13,7 @@ var Queue = function() {
     //increase que size
     queSize++;
     //create que item
-    storage[countAdd] = {data: value, next: undefined};
-    if (countAdd > 0) {
-      //attatch next of previous que item 
-      storage[countAdd-1].next = countAdd;
-    }
+    storage[countAdd] = value;
     countAdd++;
   };
 
@@ -25,7 +21,8 @@ var Queue = function() {
     if (queSize !== 0) {
       //something
       //retrieve my 'popped' item
-      var retVal = storage[countLost].data;
+      var retVal = storage[countLost];
+      delete storage[countLost];
       //reduce 'size' of que
       queSize--;
       countLost++;
