@@ -31,7 +31,7 @@ var stackMethods = {
   },
 
   pop: function(){
-    
+     
     return this[this.stackSize];
   },
 
