@@ -2,34 +2,84 @@
 
 // Instantiate a new graph
 var Graph = function() {
+  //properteis of graph
+  this.allNodes = {};
+  this.counter = 0;
+  this.edgeMatrix = [];
 };
 
 // Add a node to the graph, passing in the node's value.
 Graph.prototype.addNode = function(node) {
+  this.allNodes[this.counter] = node;
+  this.counter++;
+  //add row, column in matrix: 
+  if (this.counter > 1) {
+    for (var arr of this.edgeMatrix) {
+      arr.push(false);
+      this.edgeMatrix.push(Array(this.counter));
+    }
+    
+  } else {
+    this.edgeMatrix = [[false]];
+  }
+
 };
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node) {
+  //iterate through all nodes
+  //when we find the target node, return true
+  return (this.getNodeKey(node) >= 0);
 };
 
 // Removes a node from the graph.
 Graph.prototype.removeNode = function(node) {
+  //delete key that has the value of node
+  var tarKey = this.getNodeKey(node);
+
+  //manipulate matrix
+  //for all (x, n), (n, y) where x = y = node's key
+  //matrix at points = false
+  if (tarKey >= 0) {
+    delete this.allNodes[tarKey];
+  }
+};
+
+Graph.prototype.getNodeKey = function(node) {
+  for (var key in this.allNodes) {
+    if (this.allNodes[key] === node) {
+      return key;
+    }
+  }
+  return -1;
 };
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
 Graph.prototype.hasEdge = function(fromNode, toNode) {
+  //check matrix
+  //x = fromNode's key y = toNode's key
+  //see if matrix(x, y) === true
 };
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
+  //manipulate matrix
+  //x = fromNode's key y = toNode's key
+  //matrix(x, y) = true
 };
 
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
+  //manipulate matrix
+    //x = fromNode's key y = toNode's key
+  //matrix(x, y) = false
 };
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+  for (var key in this.allNodes) {
+    cb(this.allNodes[key]);
+  }
 };
 
 /*
