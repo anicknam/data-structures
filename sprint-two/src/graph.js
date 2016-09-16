@@ -25,6 +25,23 @@ Graph.prototype.addNode = function(node) {
 
 };
 
+Graph.prototype.matrixTraverse = function(bool, x, y) {
+  //if i'm targeting a specific edge
+  console.log("hello world");
+  debugger;
+  if (bool === null) {
+    return this.edgeMatrix[x][y];
+  } if (y !== undefined) {
+    this.edgeMatrix[x][y] = bool;
+  } else {
+    //makes all (n, x), (x, n) false
+    for (var index in this.edgeMatrix) {
+      this.edgeMatrix[index][x] = false;
+    }
+    this.edgeMatrix[x].fill(false);
+  }
+};
+
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node) {
   //iterate through all nodes
@@ -37,9 +54,7 @@ Graph.prototype.removeNode = function(node) {
   //delete key that has the value of node
   var tarKey = this.getNodeKey(node);
 
-  //manipulate matrix
-  //for all (x, n), (n, y) where x = y = node's key
-  //matrix at points = false
+  this.matrixTraverse(false, tarKey);
   if (tarKey >= 0) {
     delete this.allNodes[tarKey];
   }
@@ -59,20 +74,21 @@ Graph.prototype.hasEdge = function(fromNode, toNode) {
   //check matrix
   //x = fromNode's key y = toNode's key
   //see if matrix(x, y) === true
+  return this.matrixTraverse(null, this.getNodeKey(fromNode), this.getNodeKey(toNode));
 };
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
-  //manipulate matrix
-  //x = fromNode's key y = toNode's key
-  //matrix(x, y) = true
+
+  this.matrixTraverse(true, this.getNodeKey(fromNode), this.getNodeKey(toNode));
+  this.matrixTraverse(true, this.getNodeKey(toNode), this.getNodeKey(fromNode));
 };
 
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
-  //manipulate matrix
-    //x = fromNode's key y = toNode's key
-  //matrix(x, y) = false
+
+  this.matrixTraverse(false, this.getNodeKey(fromNode), this.getNodeKey(toNode));
+  this.matrixTraverse(false, this.getNodeKey(toNode), this.getNodeKey(fromNode));
 };
 
 // Pass in a callback which will be executed on each node of the graph.
