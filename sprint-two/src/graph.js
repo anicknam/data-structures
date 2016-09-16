@@ -16,8 +16,8 @@ Graph.prototype.addNode = function(node) {
   if (this.counter > 1) {
     for (var arr of this.edgeMatrix) {
       arr.push(false);
-      this.edgeMatrix.push(Array(this.counter));
     }
+    this.edgeMatrix.push(Array(this.counter));
     
   } else {
     this.edgeMatrix = [[false]];
@@ -27,8 +27,6 @@ Graph.prototype.addNode = function(node) {
 
 Graph.prototype.matrixTraverse = function(bool, x, y) {
   //if i'm targeting a specific edge
-  console.log("hello world");
-  debugger;
   if (bool === null) {
     return this.edgeMatrix[x][y];
   } if (y !== undefined) {
@@ -69,24 +67,21 @@ Graph.prototype.getNodeKey = function(node) {
   return -1;
 };
 
-// Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
+
 Graph.prototype.hasEdge = function(fromNode, toNode) {
   //check matrix
-  //x = fromNode's key y = toNode's key
-  //see if matrix(x, y) === true
-  return this.matrixTraverse(null, this.getNodeKey(fromNode), this.getNodeKey(toNode));
+
+  return true === this.matrixTraverse(null, this.getNodeKey(fromNode), this.getNodeKey(toNode));
 };
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
-
   this.matrixTraverse(true, this.getNodeKey(fromNode), this.getNodeKey(toNode));
   this.matrixTraverse(true, this.getNodeKey(toNode), this.getNodeKey(fromNode));
 };
 
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
-
   this.matrixTraverse(false, this.getNodeKey(fromNode), this.getNodeKey(toNode));
   this.matrixTraverse(false, this.getNodeKey(toNode), this.getNodeKey(fromNode));
 };
@@ -102,4 +97,9 @@ Graph.prototype.forEachNode = function(cb) {
  * Complexity: What is the time complexity of the above functions?
  */
 
-
+//addNode: O(n)
+//removeNode: O(n)
+//contains: O(1)
+//removeEdge: O(1)
+//addEdge: O(1)
+//getforEachNode: O(n)
