@@ -41,4 +41,15 @@ describe('tree', function() {
     expect(tree.contains(8)).to.equal(true);
   });
 
+  it('should add trees as children', function(){
+    var firstTree = Tree(4);
+
+    var secondTree = Tree(1);
+    firstTree.addChild(secondTree);
+
+
+    expect(firstTree.contains(1)).to.equal(true);
+
+  });
+
 });

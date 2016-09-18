@@ -51,5 +51,12 @@ describe('linkedList', function() {
     expect(linkedList.contains(4)).to.equal(false);
   });
 
+  it('should return true only for same object', function() {
+    var obj = {};
+    linkedList.addToTail(obj);
+    expect(linkedList.contains(obj)).to.equal(true);
+    expect(linkedList.contains({})).to.equal(false);
+  });
+
   // add more tests here to test the functionality of linkedList
 });

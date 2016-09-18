@@ -19,12 +19,12 @@ var methods = {
     // inner function that checks the value and checks the target child 
     // and if the target child is undefined, makes that value the target child
     // and if not, repeat!
-
     if (val > this.value) {
       (this.right) ? this.right.insert(val) : this.right = BinarySearchTree(val);
-    } else {
+    } else if (val < this.value) {
       (this.left) ? this.left.insert(val) : this.left = BinarySearchTree(val);
     }
+    //duplicated entries are not acted upon
   },
 
   contains: function(val) {

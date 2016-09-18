@@ -47,6 +47,15 @@ describe('hashTable', function() {
     window.getIndexBelowMaxForKey = oldHashFunction;
   });
 
+  it('should accept keys that are not strings', function(){
+    var obj = {};
+    var arr = [];
+    hashTable.insert(obj, obj);
+    hashTable.insert(234, arr);
+    expect(hashTable.retrieve(obj)).to.eql(obj);
+    expect(hashTable.retrieve(234)).to.eql(arr);
+  });
+
   // (Advanced! Remove the extra "x" when you want the following tests to run)
   xit ('should double in size when needed', function() {
     _.each(people, function(person) {

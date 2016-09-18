@@ -7,7 +7,6 @@ var HashTable = function() {
 
 // HashTable.prototype.initiate = function(){
 //   this._storage.each()
-// }
 
 HashTable.prototype.node = function (k, v) {
   //tri-tuple
@@ -28,7 +27,7 @@ HashTable.prototype.findNode = function(node, k) {
     return undefined;
   }
   var end = false;
-  while(!end) {
+  while (!end) {
     if (node.get(0) === k) {
       //if found return value of node
       return node;
@@ -50,10 +49,18 @@ HashTable.prototype.reHash = function() {
   //put info from temp to new storage
 };
 
+//return hash val for any item
+HashTable.prototype.keyWrapper = function(item) {
+  if (typeof item !== 'string') {
+    return JSON.stringify(item);
+  } else {
+    return item;
+  }
+};
+
 
 HashTable.prototype.insert = function(k, v) {
-
-  var index = getIndexBelowMaxForKey(k, this._limit);
+  var index = getIndexBelowMaxForKey(this.keyWrapper(k), this._limit);
   // if we already have sth in that buket, call nodeAttached on last node in that buket
   var bucket = this._storage.get(index);
   if (bucket) {
@@ -80,14 +87,14 @@ HashTable.prototype.insert = function(k, v) {
 };
 
 HashTable.prototype.retrieve = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
+  var index = getIndexBelowMaxForKey(this.keyWrapper(k), this._limit);
   var firstNode = this._storage.get(index);
   var foundNode = this.findNode(firstNode, k);
   return (foundNode ? foundNode.get(1) : undefined);
 };
 
 HashTable.prototype.remove = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
+  var index = getIndexBelowMaxForKey(this.keyWrapper(k), this._limit);
   //remove should remove that node inside linked list at index for that key
   var firstNode = this._storage.get(index);
   var prevNode;

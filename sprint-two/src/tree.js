@@ -2,7 +2,6 @@ var Tree = function(value) {
   var newTree = {};
   newTree.value = value;
   newTree.children = [];
-
   _.extend(newTree, treeMethods);
 
   return newTree;
@@ -10,10 +9,17 @@ var Tree = function(value) {
 
 var treeMethods = {};
 
-treeMethods.addChild = function(value) {
-// create a child (that is also a tree)
-  this.children.push(Tree(value));
+//all tree objects are designated as 'isTree'
+treeMethods.isTree = true;
 
+treeMethods.addChild = function(value) {
+  //if the value is a tree, appends it to current tree
+  if (value.isTree) {
+    this.children.push(value);  
+  } else {
+  // create a child (that is also a tree)
+    this.children.push(Tree(value));
+  }
 };
 
 treeMethods.contains = function(target) {
@@ -34,6 +40,23 @@ treeMethods.contains = function(target) {
   searchTree(this);
   return hasFound;
 };
+
+// treeMethods.getChild = function(value) {
+//   if (this.contains(value)) {
+//     var recurser = function(tree) {
+//       if (tree.value === value) {
+//         return tree;
+//       } else {
+//         _.each(tree.children, function(child) {
+//           return recurser(child);
+//         });
+//       }
+//     };
+//     recurser(this);
+//   } else {
+//     return undefined;
+//   }
+// };
 
 
 

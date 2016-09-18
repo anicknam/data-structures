@@ -2,7 +2,7 @@
 
 // Instantiate a new graph
 var Graph = function() {
-  //properteis of graph
+  //properties of graph
   this.allNodes = {};
   this.counter = 0;
   this.edgeMatrix = [];
@@ -18,7 +18,7 @@ Graph.prototype.addNode = function(node) {
       arr.push(false);
     }
     this.edgeMatrix.push(Array(this.counter));
-    
+    //if initial condition, just have a 1x1 matrix of false
   } else {
     this.edgeMatrix = [[false]];
   }
@@ -26,24 +26,24 @@ Graph.prototype.addNode = function(node) {
 };
 
 Graph.prototype.matrixTraverse = function(bool, x, y) {
-  //if i'm targeting a specific edge
+  //function 1: see if there is an edge
   if (bool === null) {
     return this.edgeMatrix[x][y];
+    //function 2: set the edge
   } if (y !== undefined) {
     this.edgeMatrix[x][y] = bool;
+    //function 3: delete a node's edges
   } else {
-    //makes all (n, x), (x, n) false
     for (var index in this.edgeMatrix) {
-      this.edgeMatrix[index][x] = false;
+      this.edgeMatrix[index].splice(x, 1);
     }
-    this.edgeMatrix[x].fill(false);
+
+    this.edgeMatrix.splice(x, 1);
   }
 };
 
 // Return a boolean value indicating if the value passed to contains is represented in the graph.
 Graph.prototype.contains = function(node) {
-  //iterate through all nodes
-  //when we find the target node, return true
   return (this.getNodeKey(node) >= 0);
 };
 
@@ -58,6 +58,9 @@ Graph.prototype.removeNode = function(node) {
   }
 };
 
+//iterate through all nodes
+//when we find the target node, return key
+//if not found return -1
 Graph.prototype.getNodeKey = function(node) {
   for (var key in this.allNodes) {
     if (this.allNodes[key] === node) {
@@ -67,23 +70,29 @@ Graph.prototype.getNodeKey = function(node) {
   return -1;
 };
 
-
+//check matrix for edge
 Graph.prototype.hasEdge = function(fromNode, toNode) {
-  //check matrix
-
-  return true === this.matrixTraverse(null, this.getNodeKey(fromNode), this.getNodeKey(toNode));
+  if (this.contains(fromNode) && this.contains(toNode)) {
+    return true === this.matrixTraverse(null, this.getNodeKey(fromNode), this.getNodeKey(toNode));
+  } else {
+    return false;
+  }
 };
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
-  this.matrixTraverse(true, this.getNodeKey(fromNode), this.getNodeKey(toNode));
-  this.matrixTraverse(true, this.getNodeKey(toNode), this.getNodeKey(fromNode));
+  if (this.contains(fromNode) && this.contains(toNode)) {
+    this.matrixTraverse(true, this.getNodeKey(fromNode), this.getNodeKey(toNode));
+    this.matrixTraverse(true, this.getNodeKey(toNode), this.getNodeKey(fromNode));
+  }
 };
 
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
-  this.matrixTraverse(false, this.getNodeKey(fromNode), this.getNodeKey(toNode));
-  this.matrixTraverse(false, this.getNodeKey(toNode), this.getNodeKey(fromNode));
+  if (this.contains(fromNode) && this.contains(toNode)) {
+    this.matrixTraverse(false, this.getNodeKey(fromNode), this.getNodeKey(toNode));
+    this.matrixTraverse(false, this.getNodeKey(toNode), this.getNodeKey(fromNode));
+  }
 };
 
 // Pass in a callback which will be executed on each node of the graph.
@@ -99,7 +108,7 @@ Graph.prototype.forEachNode = function(cb) {
 
 //addNode: O(n)
 //removeNode: O(n)
-//contains: O(1)
-//removeEdge: O(1)
-//addEdge: O(1)
+//contains: O(n)
+//removeEdge: O(n)
+//addEdge: O(n)
 //getforEachNode: O(n)
